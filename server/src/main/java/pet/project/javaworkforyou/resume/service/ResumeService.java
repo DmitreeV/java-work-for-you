@@ -1,20 +1,19 @@
 package pet.project.javaworkforyou.resume.service;
 
+import pet.project.javaworkforyou.resume.dto.ResumeCreateDto;
 import pet.project.javaworkforyou.resume.dto.ResumeDto;
 
 import java.util.List;
 
 public interface ResumeService {
 
-    ResumeDto saveResume(Long creatorId, ResumeDto resumeDto);
+    ResumeDto saveResume(Long userId, ResumeCreateDto resumeDto);
 
-    ResumeDto updateResume(ResumeDto resumeDto);
+    ResumeDto updateResume(Long resumeId, Long userId, ResumeCreateDto resumeDto);
 
-    ResumeDto getResumeById(Long resumeId);
+    ResumeDto getResumeByUserId(Long userId, Long resumeId);
 
-    List<ResumeDto> getAllResumesByUser(List<Long> resumeIds);
+    List<ResumeDto> getAllResumesByUser(Long userId);
 
     void deleteResume(Long resumeId);
-
-
 }

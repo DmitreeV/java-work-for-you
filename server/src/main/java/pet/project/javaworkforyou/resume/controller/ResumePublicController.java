@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users/{userId}/resumes")
-public class ResumeController {
+public class ResumePublicController {
 
     private final ResumeService resumeService;
 

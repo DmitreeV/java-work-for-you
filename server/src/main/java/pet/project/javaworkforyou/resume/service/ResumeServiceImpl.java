@@ -35,7 +35,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         resume.setCreator(user);
         resume.setCreatedOn(LocalDateTime.now());
-        log.info("Saved new resume {}", resumeDto);
+        log.info("Saved new resume {}.", resumeDto);
         return resumeMapper.toResumeDto(resumeRepository.save(resume));
     }
 
@@ -49,7 +49,7 @@ public class ResumeServiceImpl implements ResumeService {
         }
         resumeToUpdate.setDescription(resume.getDescription());
         resumeToUpdate.setCreatedOn(LocalDateTime.now());
-        log.info("Updated resume with id {}", resumeId);
+        log.info("Updated resume with id {}.", resumeId);
         return resumeMapper.toResumeDto(resumeRepository.save(resumeToUpdate));
     }
 
@@ -77,7 +77,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void deleteResume(Long resumeId) {
-        log.info("Resume with id={} is deleted.", resumeId);
+        log.info("Resume with id {} is deleted.", resumeId);
         resumeRepository.deleteById(resumeId);
     }
 

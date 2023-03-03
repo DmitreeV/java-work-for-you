@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         } catch (DataIntegrityViolationException e) {
             throw new ConflictException("User is already exists.");
         }
-        log.info("Saved new user {}", userDto);
+        log.info("Saved new user {}.", userDto);
         return userMapper.toUserDto(user);
     }
 
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        log.info("User with userId={} is deleted.", userId);
+        log.info("User with userId {} is deleted.", userId);
         userRepository.deleteById(userId);
     }
 }

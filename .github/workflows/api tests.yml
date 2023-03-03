@@ -1,8 +1,0 @@
-name: API Tests
-
-on:
-  pull_request:
-
-jobs:
-  build:
-    uses: java-work-for-you/blob/add-server/postman/-Work%20for%20you-%20resume%20tests.json

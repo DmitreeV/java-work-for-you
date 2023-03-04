@@ -1,7 +1,7 @@
 package pet.project.javaworkforyou.category.service;
 
 import pet.project.javaworkforyou.category.dto.CategoryDto;
-import pet.project.javaworkforyou.category.model.CategoryCreateDto;
+import pet.project.javaworkforyou.category.dto.CategoryCreateDto;
 
 import java.util.List;
 

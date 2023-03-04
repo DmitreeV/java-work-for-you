@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pet.project.javaworkforyou.category.dto.CategoryDto;
-import pet.project.javaworkforyou.category.model.CategoryCreateDto;
+import pet.project.javaworkforyou.category.dto.CategoryCreateDto;
 import pet.project.javaworkforyou.category.service.CategoryService;
 
 @RestController

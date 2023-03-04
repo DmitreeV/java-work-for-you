@@ -1,4 +1,4 @@
-package pet.project.javaworkforyou.category.model;
+package pet.project.javaworkforyou.category.dto;
 
 import lombok.*;
 
@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CategoryCreateDto {
 
     private String name;

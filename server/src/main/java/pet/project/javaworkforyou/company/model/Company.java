@@ -1,7 +1,6 @@
 package pet.project.javaworkforyou.company.model;
 
 import lombok.*;
-import pet.project.javaworkforyou.user.model.User;
 
 import javax.persistence.*;
 
@@ -24,7 +23,4 @@ public class Company {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToOne
-    private User recruiter;
 }

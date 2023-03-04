@@ -8,9 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CompanyShortDto {
+public class CompanyCreateDto {
 
-    private Long id;
     private String name;
     private String description;
 }

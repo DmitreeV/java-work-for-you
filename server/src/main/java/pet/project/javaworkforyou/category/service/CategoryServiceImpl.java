@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import pet.project.javaworkforyou.category.dto.CategoryDto;
 import pet.project.javaworkforyou.category.mapper.CategoryMapper;
 import pet.project.javaworkforyou.category.model.Category;
-import pet.project.javaworkforyou.category.model.CategoryCreateDto;
+import pet.project.javaworkforyou.category.dto.CategoryCreateDto;
 import pet.project.javaworkforyou.category.repository.CategoryRepository;
 import pet.project.javaworkforyou.error.exception.ConflictException;
 import pet.project.javaworkforyou.error.exception.NotFoundException;
@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
         } catch (DataIntegrityViolationException e) {
             throw new ConflictException("Category is already exists.");
         }
-        log.info("Saved new category {}.", newCategoryDto);
+        log.info("Saved new category : {}.", newCategoryDto.getName());
         return categoryMapper.toCategoryDto(category);
     }
 

@@ -19,4 +19,11 @@ public class CommentPublicController {
     public CommentDto saveComment(@PathVariable Long userId, @PathVariable Long compId, @RequestBody CommentCreateDto commentDto) {
         return commentService.saveComment(commentDto, userId, compId);
     }
+
+    @DeleteMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void userDeleteComment(@PathVariable Long userId,
+                                  @PathVariable Long commentId) {
+        commentService.userDeleteComment(commentId, userId);
+    }
 }

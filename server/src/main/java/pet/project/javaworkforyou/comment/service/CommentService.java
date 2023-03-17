@@ -6,4 +6,6 @@ import pet.project.javaworkforyou.comment.dto.CommentDto;
 public interface CommentService {
 
     CommentDto saveComment(CommentCreateDto commentDto, Long userId, Long compId);
+
+    void userDeleteComment(Long commentId, Long userId);
 }

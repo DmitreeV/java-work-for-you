@@ -4,6 +4,7 @@ import lombok.*;
 import pet.project.javaworkforyou.category.model.Category;
 import pet.project.javaworkforyou.company.model.Company;
 import pet.project.javaworkforyou.location.model.Location;
+import pet.project.javaworkforyou.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,6 +33,9 @@ public class Vacancy {
     private LocalDateTime publishedOn;
 
     @ManyToOne
+    private User recruiter;
+
+    @ManyToOne
     private Category category;
 
     @ManyToOne
@@ -39,4 +43,10 @@ public class Vacancy {
 
     @ManyToOne
     private Company company;
+
+    @Enumerated(EnumType.STRING)
+    private State state;
+
+    @Builder.Default
+    private Long views = 0L;
 }

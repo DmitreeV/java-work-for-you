@@ -1290,7 +1290,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 1,\n  \"location\": {\n    \"lat\": 23.75,\n    \"lon\": 37.62\n  },\n  \"company\": 1\n}",
+							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 2,\n  \"location\": {\n    \"lat\": 23.75,\n    \"lon\": 37.62\n  },\n  \"company\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1461,7 +1461,7 @@
 							"variable": [
 								{
 									"key": "compId",
-									"value": "1",
+									"value": "2",
 									"description": "company id"
 								}
 							]
@@ -1551,6 +1551,378 @@
 									"key": "vacancyId",
 									"value": "1",
 									"description": "vacancy id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reaction",
+			"item": [
+				{
+					"name": "Добавление нового пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('email');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\": \"Ivan\",\n   \"email\": \"ivan@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового резюме пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Пользователь должен содержать поля: id, description\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('description');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"description\": \"the best java developer is looking for a job\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/resumes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"resumes"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "4",
+									"description": "user id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление новой вакансии",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Событие должно содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('publishedOn');",
+									"pm.expect(target).to.have.property('recruiter');",
+									"pm.expect(target).to.have.property('state');",
+									"pm.expect(target).to.have.property('company');",
+									"pm.expect(target).to.have.property('location');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 2,\n  \"location\": {\n    \"lat\": 23.75,\n    \"lon\": 37.62\n  },\n  \"company\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:recruiterId/vacancies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":recruiterId",
+								"vacancies"
+							],
+							"variable": [
+								{
+									"key": "recruiterId",
+									"value": "3",
+									"description": "recruiter id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового отклика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vacancy\": 2,\n  \"resume\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reactions/:resumeId/:vacancyId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reactions",
+								":resumeId",
+								":vacancyId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "2"
+								},
+								{
+									"key": "vacancyId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех откликов создателя резюме",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/reactions/:resumeId/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reactions",
+								":resumeId",
+								"all"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "2",
+									"description": "resume id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации об отклике по его идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/reactions/:reactionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reactions",
+								":reactionId"
+							],
+							"variable": [
+								{
+									"key": "reactionId",
+									"value": "1",
+									"description": "reaction id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление отклика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/reactions/:reactionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reactions",
+								":reactionId"
+							],
+							"variable": [
+								{
+									"key": "reactionId",
+									"value": "1",
+									"description": "reaction id"
 								}
 							]
 						}

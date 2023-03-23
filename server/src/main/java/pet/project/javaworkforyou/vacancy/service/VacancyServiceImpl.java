@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pet.project.javaworkforyou.category.model.Category;
 import pet.project.javaworkforyou.category.repository.CategoryRepository;
 import pet.project.javaworkforyou.company.model.Company;
@@ -29,11 +30,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static pet.project.javaworkforyou.vacancy.model.State.ARCHIVED;
 import static pet.project.javaworkforyou.vacancy.model.State.PUBLISHED;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class VacancyServiceImpl implements VacancyService {
     private final VacancyRepository vacancyRepository;
     private final UserRepository userRepository;
@@ -45,7 +48,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public VacancyDto saveVacancy(Long recruiterId, VacancyCreateDto vacancyCreateDto) {
-        User user = getUserIfExists(recruiterId);
+        User user = getUser(recruiterId);
         Vacancy vacancy = vacancyMapper.toVacancy(vacancyCreateDto);
         Location location = locationMapper.toLocation(vacancyCreateDto.getLocation());
         Category category = getCategory(vacancyCreateDto.getCategory());
@@ -79,6 +82,16 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public VacancyDto archivedVacancyByRecruiter(Long vacancyId, Long userId) {
+        Vacancy vacancy = vacancyRepository.findByIdAndRecruiterId(vacancyId, userId)
+                .orElseThrow(() -> new ConflictException("Only a recruiter can change a vacancy."));
+        vacancy.setState(ARCHIVED);
+        log.info("The vacancy has been moved to the archive.");
+        return vacancyMapper.toVacancyDto(vacancyRepository.save(vacancy));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public VacancyDto getVacancyById(Long vacancyId) {
         Vacancy vacancy = getVacancy(vacancyId);
         if (!vacancy.getState().equals(PUBLISHED)) {
@@ -91,6 +104,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VacancyDto> getAllVacanciesByCompany(Long companyId, Integer from, Integer size) {
         Company company = getCompany(companyId);
         Page<Vacancy> vacancies = vacancyRepository.findAllByCompany(company, PageRequest.of(from / size, size));
@@ -101,6 +115,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VacancyDto> searchVacanciesByText(String text, int from, int size) {
 
         if (text.isEmpty()) {
@@ -120,7 +135,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public void recruiterDeleteVacancy(Long vacancyId, Long userId) {
-        getUserIfExists(userId);
+        getUser(userId);
         Vacancy vacancy = getVacancy(vacancyId);
 
         if (!Objects.equals(vacancy.getRecruiter().getId(), userId)) {
@@ -130,7 +145,7 @@ public class VacancyServiceImpl implements VacancyService {
         log.info("The vacancy was deleted by the user {}.", userId);
     }
 
-    private User getUserIfExists(Long userId) {
+    private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format("User with userId=%d not found", userId)));
     }

@@ -11,6 +11,8 @@ public interface VacancyService {
 
     VacancyDto updateVacancyByRecruiter(Long vacancyId, Long recruiterId, VacancyCreateDto vacancyCreateDto);
 
+    VacancyDto archivedVacancyByRecruiter(Long vacancyId, Long userId);
+
     VacancyDto getVacancyById(Long vacancyId);
 
     List<VacancyDto> getAllVacanciesByCompany(Long companyId, Integer from, Integer size);

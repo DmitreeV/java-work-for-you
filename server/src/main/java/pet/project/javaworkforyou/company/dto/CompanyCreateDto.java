@@ -11,5 +11,6 @@ import lombok.*;
 public class CompanyCreateDto {
 
     private String name;
+
     private String description;
 }

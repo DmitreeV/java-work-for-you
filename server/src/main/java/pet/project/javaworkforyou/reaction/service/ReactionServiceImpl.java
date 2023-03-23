@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pet.project.javaworkforyou.error.exception.ConflictException;
 import pet.project.javaworkforyou.error.exception.NotFoundException;
 import pet.project.javaworkforyou.reaction.dto.ReactionDto;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ReactionServiceImpl implements ReactionService {
 
     private final ReactionRepository reactionRepository;
@@ -59,6 +61,7 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ReactionDto> getAllReactionsByResumeCreator(Long resumeId, Integer from, Integer size) {
         Resume resume = getResume(resumeId);
 
@@ -70,6 +73,7 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ReactionDto getReactionById(Long reactionId) {
         log.info("Received a reaction with id {}.", reactionId);
         return reactionMapper.toReactionDto(getReaction(reactionId));

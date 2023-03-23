@@ -2,6 +2,7 @@ package pet.project.javaworkforyou.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.javaworkforyou.comment.dto.CommentCreateDto;
@@ -17,7 +18,9 @@ import pet.project.javaworkforyou.user.model.User;
 import pet.project.javaworkforyou.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,8 +35,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto saveComment(CommentCreateDto commentDto, Long userId, Long compId) {
-        User user = getUserIfExists(userId);
-        Company company = getCompanyIfExists(compId);
+        User user = getUser(userId);
+        Company company = getCompany(compId);
         Comment comment = commentMapper.toComment(commentDto);
 
         comment.setAuthor(user);
@@ -44,8 +47,38 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public CommentDto updateComment(Long commentId, Long userId, CommentCreateDto commentDto) {
+        Comment comment = commentRepository.findByIdAndAuthorId(commentId, userId)
+                .orElseThrow(() -> new ConflictException("Only the author can change the comment."));
+
+        comment.setText(commentDto.getText());
+        log.info("Updated comment with id {}.", commentId);
+        return commentMapper.toCommentDto(commentRepository.save(comment));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CommentDto> getAllCommentsByCompany(Long compId, Integer from, Integer size) {
+        Company company = getCompany(compId);
+        List<Comment> comments = commentRepository.findAllByCompany(company, PageRequest.of(from / size, size));
+
+        log.info("Received a list of all comments company id {} with size of {}.", compId, comments.size());
+        return comments.stream()
+                .map(commentMapper::toCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CommentDto getCommentById(Long commentId) {
+        Comment comment = getComment(commentId);
+        log.info("Received a comment with id {}.", commentId);
+        return commentMapper.toCommentDto(comment);
+    }
+
+    @Override
     public void userDeleteComment(Long commentId, Long userId) {
-        getUserIfExists(userId);
+        getUser(userId);
         Comment comment = getComment(commentId);
 
         if (!Objects.equals(comment.getAuthor().getId(), userId)) {
@@ -55,12 +88,12 @@ public class CommentServiceImpl implements CommentService {
         log.info("The comment was deleted by the user {}.", userId);
     }
 
-    private User getUserIfExists(Long userId) {
+    private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format("User with userId=%d not found", userId)));
     }
 
-    private Company getCompanyIfExists(Long compId) {
+    private Company getCompany(Long compId) {
         return companyRepository.findById(compId).orElseThrow(() ->
                 new NotFoundException(String.format("Company with id=%d not found", compId)));
     }

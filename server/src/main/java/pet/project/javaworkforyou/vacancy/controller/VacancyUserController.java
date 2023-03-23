@@ -21,9 +21,16 @@ public class VacancyUserController {
     }
 
     @PatchMapping("/{vacancyId}")
+    @ResponseStatus(value = HttpStatus.OK)
     public VacancyDto updateEventByUserId(@PathVariable Long vacancyId, @PathVariable Long recruiterId,
                                           @RequestBody VacancyCreateDto vacancyCreateDto) {
         return vacancyService.updateVacancyByRecruiter(vacancyId, recruiterId, vacancyCreateDto);
+    }
+
+    @PatchMapping("/{vacancyId}/archive")
+    @ResponseStatus(value = HttpStatus.OK)
+    public VacancyDto archivedVacancyByRecruiter(@PathVariable Long vacancyId, @PathVariable Long recruiterId) {
+        return vacancyService.archivedVacancyByRecruiter(vacancyId, recruiterId);
     }
 
     @DeleteMapping("/{vacancyId}")

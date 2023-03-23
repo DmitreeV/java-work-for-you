@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users/{userId}/resumes")
-public class ResumePublicController {
+public class ResumeUserController {
 
     private final ResumeService resumeService;
 
@@ -30,11 +30,13 @@ public class ResumePublicController {
     }
 
     @GetMapping("/{resumeId}")
+    @ResponseStatus(value = HttpStatus.OK)
     public ResumeDto getResumeByUserId(@PathVariable Long resumeId, @PathVariable Long userId) {
         return resumeService.getResumeByUserId(userId, resumeId);
     }
 
     @GetMapping
+    @ResponseStatus(value = HttpStatus.OK)
     public List<ResumeDto> getAllResumesByUser(@PathVariable Long userId) {
         return resumeService.getAllResumesByUser(userId);
     }

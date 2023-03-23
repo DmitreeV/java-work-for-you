@@ -22,6 +22,7 @@ public class ReactionUserController {
     }
 
     @GetMapping("/{resumeId}/all")
+    @ResponseStatus(value = HttpStatus.OK)
     public List<ReactionDto> getAllReactionsByResumeCreator(@PathVariable Long resumeId,
                                                             @RequestParam(defaultValue = "0") Integer from,
                                                             @RequestParam(defaultValue = "10") Integer size) {
@@ -29,6 +30,7 @@ public class ReactionUserController {
     }
 
     @GetMapping("/{reactionId}")
+    @ResponseStatus(value = HttpStatus.OK)
     public ReactionDto getResumeByUserId(@PathVariable Long reactionId) {
         return reactionService.getReactionById(reactionId);
     }

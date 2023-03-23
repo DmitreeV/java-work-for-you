@@ -1,5 +1,6 @@
 package pet.project.javaworkforyou.vacancy.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import pet.project.javaworkforyou.category.dto.CategoryDto;
 import pet.project.javaworkforyou.company.dto.CompanyDto;
@@ -22,6 +23,7 @@ public class VacancyDto {
 
     private String description;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishedOn;
 
     private UserShortDto recruiter;

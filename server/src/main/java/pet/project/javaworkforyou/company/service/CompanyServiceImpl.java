@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pet.project.javaworkforyou.company.dto.CompanyCreateDto;
 import pet.project.javaworkforyou.company.dto.CompanyDto;
 import pet.project.javaworkforyou.company.mapper.CompanyMapper;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
@@ -50,12 +52,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CompanyDto getCompanyById(Long compId) {
         log.info("Received a company with id {}.", compId);
         return companyMapper.toCompanyDto(getCompany(compId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CompanyDto> getAllCompanies(Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from, size);
         log.info("Received a list of all companies with size of {}.", size);

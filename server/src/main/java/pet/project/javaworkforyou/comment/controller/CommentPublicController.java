@@ -3,27 +3,19 @@ package pet.project.javaworkforyou.comment.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pet.project.javaworkforyou.comment.dto.CommentCreateDto;
 import pet.project.javaworkforyou.comment.dto.CommentDto;
 import pet.project.javaworkforyou.comment.service.CommentService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users/{userId}/comments")
+@RequestMapping("/comments")
 public class CommentPublicController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{compId}")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public CommentDto saveComment(@PathVariable Long userId, @PathVariable Long compId, @RequestBody CommentCreateDto commentDto) {
-        return commentService.saveComment(commentDto, userId, compId);
-    }
-
-    @DeleteMapping("/{commentId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void userDeleteComment(@PathVariable Long userId,
-                                  @PathVariable Long commentId) {
-        commentService.userDeleteComment(commentId, userId);
+    @GetMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public CommentDto getVacancyById(@PathVariable Long commentId) {
+        return commentService.getCommentById(commentId);
     }
 }

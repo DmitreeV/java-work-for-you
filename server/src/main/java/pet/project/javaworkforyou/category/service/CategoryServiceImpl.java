@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pet.project.javaworkforyou.category.dto.CategoryDto;
 import pet.project.javaworkforyou.category.mapper.CategoryMapper;
 import pet.project.javaworkforyou.category.model.Category;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -56,12 +58,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Long categoryId) {
         log.info("Received a category with id {}.", categoryId);
         return categoryMapper.toCategoryDto(getCategory(categoryId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> getAllCategories(Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from, size);
         log.info("Received a list of all categories with size of {}.", size);
@@ -83,5 +87,4 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
                 new NotFoundException(String.format("Category with id=%d not found", categoryId)));
     }
-
 }

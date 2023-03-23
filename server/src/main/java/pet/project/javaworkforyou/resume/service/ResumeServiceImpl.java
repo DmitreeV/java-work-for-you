@@ -30,7 +30,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public ResumeDto saveResume(Long userId, ResumeCreateDto resumeDto) {
-        User user = getUserIfExists(userId);
+        User user = getUser(userId);
         Resume resume = resumeMapper.toResume(resumeDto);
 
         resume.setCreator(user);
@@ -81,7 +81,7 @@ public class ResumeServiceImpl implements ResumeService {
         resumeRepository.deleteById(resumeId);
     }
 
-    private User getUserIfExists(Long userId) {
+    private User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format("User with userId=%d not found", userId)));
     }

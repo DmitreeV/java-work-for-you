@@ -18,6 +18,7 @@ public interface CompanyMapper {
                 .name(company.getName())
                 .description(company.getDescription())
                 .comments(new ArrayList<>())
+                .vacancies(new ArrayList<>())
                 .build();
     }
 }

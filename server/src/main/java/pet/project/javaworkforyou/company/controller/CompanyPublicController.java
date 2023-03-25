@@ -1,5 +1,7 @@
 package pet.project.javaworkforyou.company.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/companies")
+@Tag(name = "Operations with companies in the public domain.")
 public class CompanyPublicController {
 
     private final CompanyService companyService;
@@ -23,6 +26,7 @@ public class CompanyPublicController {
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a list of all companies.")
     public List<CompanyDto> getAllCompanies(@RequestParam(defaultValue = "0") Integer from,
                                             @RequestParam(defaultValue = "10") Integer size) {
         return companyService.getAllCompanies(from, size);
@@ -30,12 +34,14 @@ public class CompanyPublicController {
 
     @GetMapping("/{compId}")
     @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a company by its Id.")
     public CompanyDto getCompanyById(@PathVariable Long compId) {
         return companyService.getCompanyById(compId);
     }
 
     @GetMapping("/{compId}/vacancies")
     @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a list of all company vacancies.")
     public List<VacancyDto> getAllVacanciesByCompany(@PathVariable Long compId,
                                                      @RequestParam(defaultValue = "0") Integer from,
                                                      @RequestParam(defaultValue = "10") Integer size) {
@@ -44,6 +50,7 @@ public class CompanyPublicController {
 
     @GetMapping("/{compId}/comments")
     @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "Returns a list of all company comments.")
     public List<CommentDto> getAllCommentsByCompany(@PathVariable Long compId,
                                                     @RequestParam(defaultValue = "0") Integer from,
                                                     @RequestParam(defaultValue = "10") Integer size) {

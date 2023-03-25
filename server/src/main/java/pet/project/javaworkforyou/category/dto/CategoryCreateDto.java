@@ -1,5 +1,6 @@
 package pet.project.javaworkforyou.category.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
@@ -10,5 +11,6 @@ import lombok.*;
 @ToString
 public class CategoryCreateDto {
 
+    @Schema(example = "Construction")
     private String name;
 }

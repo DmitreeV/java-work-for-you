@@ -1,7 +1,10 @@
 package pet.project.javaworkforyou.resume.dto;
 
 import com.sun.istack.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -11,6 +14,7 @@ import lombok.*;
 @ToString
 public class ResumeCreateDto {
 
-    @NotNull
+    @Size(min = 20, max = 5000)
+    @Schema(example = "Resume description")
     private String description;
 }

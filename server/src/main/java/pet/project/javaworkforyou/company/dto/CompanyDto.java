@@ -1,7 +1,8 @@
 package pet.project.javaworkforyou.company.dto;
 
 import lombok.*;
-import pet.project.javaworkforyou.comment.dto.CommentDto;
+import pet.project.javaworkforyou.comment.dto.CommentShortDto;
+import pet.project.javaworkforyou.vacancy.dto.VacancyShortDto;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public class CompanyDto {
 
     private String description;
 
-    private List<CommentDto> comments;
+    private List<CommentShortDto> comments;
+
+    private List<VacancyShortDto> vacancies;
 }

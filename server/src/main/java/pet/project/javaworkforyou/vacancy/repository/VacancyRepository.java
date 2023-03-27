@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pet.project.javaworkforyou.company.model.Company;
+import pet.project.javaworkforyou.location.model.Location;
 import pet.project.javaworkforyou.vacancy.model.Vacancy;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
     Page<Vacancy> findAllByCompany(Company company, Pageable pageable);
 
     Optional<Vacancy> findByIdAndRecruiterId(Long vacancyId, Long userId);
+
+    Page<Vacancy> findAllByLocation(Location location, Pageable pageable);
 }

@@ -17,6 +17,8 @@ public interface VacancyService {
 
     List<VacancyDto> getAllVacanciesByCompany(Long companyId, Integer from, Integer size);
 
+    List<VacancyDto> getAllVacanciesInLocation(Long locationId, Integer from, Integer size);
+
     List<VacancyDto> searchVacanciesByText(String text, int from, int size);
 
     void recruiterDeleteVacancy(Long vacancyId, Long userId);

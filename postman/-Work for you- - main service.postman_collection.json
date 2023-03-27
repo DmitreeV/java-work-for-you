@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d1195832-c190-417b-8a33-15aa90f9a78b",
+		"_postman_id": "568ab51b-f35f-4bdf-b610-7b150997c8cf",
 		"name": "\"Work for you\" - main service",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26544155"
 	},
 	"item": [
 		{
@@ -53,24 +54,13 @@
 								{
 									"key": "username",
 									"value": "user",
-									"type": "default"
+									"type": "text"
 								},
 								{
 									"key": "password",
 									"value": "user",
-									"type": "default"
+									"type": "text"
 								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:8080/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"login"
 							]
 						}
 					},
@@ -793,6 +783,237 @@
 			]
 		},
 		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "Добавление новой локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Санкт-Петербург\",\n  \"lat\": 59.93,\n  \"lon\": 30.31,\n  \"radius\": 99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Редактирование локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Санкт-Петербург\",\n  \"lat\": 59.94,\n  \"lon\": 30.32,\n  \"radius\": 95\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1",
+									"description": "location id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение данных о локации по ее идентификатору",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/locations/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"locations",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1",
+									"description": "location id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка всех локаций",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Должна быть найдена только одна локация\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/locations/:locationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations",
+								":locationId"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "1",
+									"description": "locationId"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Company/ Comment",
 			"item": [
 				{
@@ -1490,6 +1711,51 @@
 					"response": []
 				},
 				{
+					"name": "Добавление новой локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Санкт-Петербург\",\n  \"lat\": 89.93,\n  \"lon\": 40.31,\n  \"radius\": 99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Добавление новой вакансии",
 					"event": [
 						{
@@ -1526,7 +1792,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 2,\n  \"location\": {\n    \"lat\": 23.75,\n    \"lon\": 37.62\n  },\n  \"company\": 2\n}",
+							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 2,\n  \"location\": {\n    \"name\": \"Санкт-Петербург\",\n    \"lat\": 59.93,\n    \"lon\": 30.31,\n    \"radius\": 99\n  },\n  \"company\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1557,6 +1823,50 @@
 					"response": []
 				},
 				{
+					"name": "Получение списка вакансий в локации",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);  ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/locations/:locationId/vacancies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"locations",
+								":locationId",
+								"vacancies"
+							],
+							"variable": [
+								{
+									"key": "locationId",
+									"value": "2",
+									"description": "location id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Редактирование вакансии hr менеджером",
 					"event": [
 						{
@@ -1576,7 +1886,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"name\": \"Java developer\",\n  \"description\": \"«Our company is an independent software developer and we have a vacancy for a Junior Software Engineer. We do not require many years of work experience, we are ready to help master the skills of a professional programmer and offer high wages and comfortable working conditions.\",\n  \"category\": 2,\n  \"location\": {\n    \"lat\": 23.75,\n    \"lon\": 37.62\n  },\n  \"company\": 2\n}",
+							"raw": "{\n\"name\": \"Java developer\",\n  \"description\": \"«Our company is an independent software developer and we have a vacancy for a Junior Software Engineer. We do not require many years of work experience, we are ready to help master the skills of a professional programmer and offer high wages and comfortable working conditions.\",\n  \"category\": 2,\n  \"location\": {\n    \"name\": \"Санкт-Петербург\",\n    \"lat\": 59.61,\n    \"lon\": 30.41,\n    \"radius\": 90\n  },\n  \"company\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1948,7 +2258,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 2,\n  \"location\": {\n    \"lat\": 23.75,\n    \"lon\": 37.62\n  },\n  \"company\": 2\n}",
+							"raw": "{\n\"name\": \"Java разработчик\",\n  \"description\": \"«Наша компания является независимым разработчиком программного обеспечения и у нас есть вакансия Junior Software Engineer. Мы не требуем многолетний опыт работы, готовы помогать осваивать навыки профессионального программиста и предлагаем высокую заработную плату и комфортные условия работы.\",\n  \"category\": 2,\n  \"location\": {\n    \"name\": \"Санкт-Петербург\",\n    \"lat\": 59.93,\n    \"lon\": 30.31,\n    \"radius\": 99\n  },\n  \"company\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2008,13 +2318,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/reactions/:resumeId/:vacancyId",
+							"raw": "http://localhost:8080/users/reactions/:resumeId/:vacancyId",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"users",
 								"reactions",
 								":resumeId",
 								":vacancyId"
@@ -2061,13 +2372,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8080/reactions/:resumeId/all",
+							"raw": "http://localhost:8080/users/reactions/:resumeId/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"users",
 								"reactions",
 								":resumeId",
 								"all"
@@ -2104,13 +2416,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/reactions/:reactionId",
+							"raw": "http://localhost:8080/users/reactions/:reactionId",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"users",
 								"reactions",
 								":reactionId"
 							],
@@ -2144,13 +2457,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/reactions/:reactionId",
+							"raw": "http://localhost:8080/users/reactions/:reactionId",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"users",
 								"reactions",
 								":reactionId"
 							],

@@ -7,8 +7,14 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class LocationDto {
 
+    private String name;
+
     private float lat;
+
     private float lon;
+
+    private Long radius;
 }

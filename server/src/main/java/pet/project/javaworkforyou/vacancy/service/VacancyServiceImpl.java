@@ -116,6 +116,17 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<VacancyDto> getAllVacanciesInLocation(Long locationId, Integer from, Integer size) {
+        Location location = getLocation(locationId);
+        Page<Vacancy> vacancies = vacancyRepository.findAllByLocation(location, PageRequest.of(from / size, size));
+        log.info("Received a list of all vacancies of the location id {} with size of {}.", locationId, vacancies.getSize());
+        return vacancies.stream()
+                .map(vacancyMapper::toVacancyDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<VacancyDto> searchVacanciesByText(String text, int from, int size) {
 
         if (text.isEmpty()) {
@@ -163,5 +174,10 @@ public class VacancyServiceImpl implements VacancyService {
     private Category getCategory(Long categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
                 new NotFoundException(String.format("Category with id=%d not found", categoryId)));
+    }
+
+    private Location getLocation(Long locationId) {
+        return locationRepository.findById(locationId).orElseThrow(() ->
+                new NotFoundException(String.format("Location with locationId=%d not found", locationId)));
     }
 }

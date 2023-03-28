@@ -62,6 +62,17 @@
 									"type": "text"
 								}
 							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
 						}
 					},
 					"response": []
@@ -128,6 +139,50 @@
 					"response": []
 				},
 				{
+					"name": "Добавление пользователя 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\": \"Arnold\",\n   \"email\": \"arni@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Добавление нового резюме пользователя",
 					"event": [
 						{
@@ -143,9 +198,11 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Пользователь должен содержать поля: id, description\", function () {",
+									"pm.test(\"Резюме должно содержать поля: id, description, createdOn, creator\", function () {",
 									"pm.expect(target).to.have.property('id');",
-									"pm.expect(target).to.have.property('description');",
+									"    pm.expect(target).to.have.property('description');",
+									"    pm.expect(target).to.have.property('createdOn');",
+									"    pm.expect(target).to.have.property('creator');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -188,6 +245,58 @@
 					"response": []
 				},
 				{
+					"name": "Добавление резюме пользователя 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"description\": \"test description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/resumes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"resumes"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2",
+									"description": "user id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Редактирование резюме пользователем",
 					"event": [
 						{
@@ -203,9 +312,11 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Пользователь должен содержать поля: id, description\", function () {",
+									"pm.test(\"Резюме должно содержать поля: id, description, createdOn, creator\", function () {",
 									"pm.expect(target).to.have.property('id');",
-									"pm.expect(target).to.have.property('description');",
+									"    pm.expect(target).to.have.property('description');",
+									"    pm.expect(target).to.have.property('createdOn');",
+									"    pm.expect(target).to.have.property('creator');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -242,6 +353,65 @@
 									"key": "userId",
 									"value": "1",
 									"description": "user id"
+								},
+								{
+									"key": "resumeId",
+									"value": "1",
+									"description": "resume id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Попытка обновить чужое резюме",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"description\": \"the best surveyor is looking for a job and really wants to earn a lot \"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/resumes/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"resumes",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2",
+									"description": "user2 id"
 								},
 								{
 									"key": "resumeId",
@@ -370,6 +540,56 @@
 					"response": []
 				},
 				{
+					"name": "Попытка получить информацию о чужом резюме",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/resumes/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"resumes",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "user id"
+								},
+								{
+									"key": "resumeId",
+									"value": "2",
+									"description": "resume2 id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Удаление резюме пользователем",
 					"event": [
 						{
@@ -422,7 +642,7 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "Добавление нового пользователя 2",
+					"name": "Добавление нового пользователя 3",
 					"event": [
 						{
 							"listen": "test",
@@ -475,6 +695,48 @@
 					"response": []
 				},
 				{
+					"name": "Получение списка всех пользователей",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/users?ids=-10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users"
+							],
+							"query": [
+								{
+									"key": "ids",
+									"value": "-10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Удаление пользователя",
 					"event": [
 						{
@@ -507,7 +769,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2",
+									"value": "3",
 									"description": "userId"
 								}
 							]
@@ -797,6 +1059,16 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -831,6 +1103,51 @@
 					"response": []
 				},
 				{
+					"name": "Попытка добавить локацию с некорректным радиусом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Санкт-Петербург\",\n  \"lat\": 59.93,\n  \"lon\": 30.31,\n  \"radius\": 100000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Редактирование локации",
 					"event": [
 						{
@@ -843,7 +1160,15 @@
 									"    pm.response.to.be.json;",
 									"});",
 									"",
-									""
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -896,7 +1221,16 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"});",
-									""
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1032,7 +1366,7 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Пользователь должен содержать поля: id, name, description\", function () {",
+									"pm.test(\"Компания должна содержать поля: id, name, description\", function () {",
 									"pm.expect(target).to.have.property('id');",
 									"pm.expect(target).to.have.property('name');",
 									"pm.expect(target).to.have.property('description');",
@@ -1269,7 +1603,17 @@
 									"    pm.response.to.be.ok;    ",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
-									"});"
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json()",
+									"",
+									"pm.test(\"Комментарий должен содержать поля: id, text, authorName, created\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('text');",
+									"pm.expect(target).to.have.property('authorName');",
+									"pm.expect(target).to.have.property('created');",
+									"})"
 								],
 								"type": "text/javascript"
 							}
@@ -1323,7 +1667,7 @@
 									"const source = pm.collectionVariables.get('response');",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Категория должна содержать поля: id, name, description\", function () {",
+									"pm.test(\"Компания должна содержать поля: id, name, description\", function () {",
 									"pm.expect(target[0]).to.have.property('id');",
 									"pm.expect(target[0]).to.have.property('name');",
 									"pm.expect(target[0]).to.have.property('description');",
@@ -1426,6 +1770,13 @@
 									"    pm.response.to.be.ok;    ",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должен быть найден только один комментарий\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1621,7 +1972,7 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Пользователь должен содержать поля: id, name, description\", function () {",
+									"pm.test(\"Компания должна содержать поля: id, name, description\", function () {",
 									"pm.expect(target).to.have.property('id');",
 									"pm.expect(target).to.have.property('name');",
 									"pm.expect(target).to.have.property('description');",
@@ -1722,6 +2073,16 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
 									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Локация должна содержать поля: name, lat, lon, radius\", function () {",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('lat');",
+									"pm.expect(target).to.have.property('lon');",
+									"pm.expect(target).to.have.property('radius');",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1771,7 +2132,7 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Событие должно содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
+									"pm.test(\"Вакансия должна содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
 									"pm.expect(target).to.have.property('id');",
 									"pm.expect(target).to.have.property('name');",
 									"pm.expect(target).to.have.property('description');",
@@ -1875,6 +2236,21 @@
 								"exec": [
 									"pm.test(\"Ответ должен содержать код статуса 200\", function () {",
 									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Вакансия должна содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('publishedOn');",
+									"pm.expect(target).to.have.property('recruiter');",
+									"pm.expect(target).to.have.property('state');",
+									"pm.expect(target).to.have.property('company');",
+									"pm.expect(target).to.have.property('location');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1938,10 +2314,16 @@
 									"const source = pm.collectionVariables.get('response');",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Вакансия должна содержать поля: id, name, description\", function () {",
+									"pm.test(\"Вакансия должна содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
 									"pm.expect(target).to.have.property('id');",
 									"pm.expect(target).to.have.property('name');",
 									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('publishedOn');",
+									"pm.expect(target).to.have.property('recruiter');",
+									"pm.expect(target).to.have.property('state');",
+									"pm.expect(target).to.have.property('company');",
+									"pm.expect(target).to.have.property('location');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1983,6 +2365,13 @@
 									"    pm.response.to.be.ok;    ",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должна быть найдена только один вакансия\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2026,6 +2415,13 @@
 									"    pm.response.to.be.ok;    ",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должна быть найдена только один вакансия\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2050,6 +2446,119 @@
 								{
 									"key": "text",
 									"value": "deVeLoper"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Перенос вакансии в архив",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Вакансия должна содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('name');",
+									"pm.expect(target).to.have.property('description');",
+									"pm.expect(target).to.have.property('category');",
+									"pm.expect(target).to.have.property('publishedOn');",
+									"pm.expect(target).to.have.property('recruiter');",
+									"pm.expect(target).to.have.property('state');",
+									"pm.expect(target).to.have.property('company');",
+									"pm.expect(target).to.have.property('location');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"Java developer\",\n  \"description\": \"«Our company is an independent software developer and we have a vacancy for a Junior Software Engineer. We do not require many years of work experience, we are ready to help master the skills of a professional programmer and offer high wages and comfortable working conditions.\",\n  \"category\": 2,\n  \"location\": {\n    \"name\": \"Санкт-Петербург\",\n    \"lat\": 59.61,\n    \"lon\": 30.41,\n    \"radius\": 90\n  },\n  \"company\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:recruiterId/vacancies/:vacancyId/archive",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":recruiterId",
+								"vacancies",
+								":vacancyId",
+								"archive"
+							],
+							"variable": [
+								{
+									"key": "recruiterId",
+									"value": "1"
+								},
+								{
+									"key": "vacancyId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Попытка получить информацию о неопубликованной вакансии",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/vacancies/:vacancyId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vacancies",
+								":vacancyId"
+							],
+							"variable": [
+								{
+									"key": "vacancyId",
+									"value": "1",
+									"description": "vacancy id"
 								}
 							]
 						}
@@ -2177,9 +2686,11 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Пользователь должен содержать поля: id, description\", function () {",
+									"pm.test(\"Резюме должно содержать поля: id, description, createdOn, creator\", function () {",
 									"pm.expect(target).to.have.property('id');",
-									"pm.expect(target).to.have.property('description');",
+									"    pm.expect(target).to.have.property('description');",
+									"    pm.expect(target).to.have.property('createdOn');",
+									"    pm.expect(target).to.have.property('creator');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2213,7 +2724,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "4",
+									"value": "5",
 									"description": "user id"
 								}
 							]
@@ -2237,7 +2748,7 @@
 									"const source = JSON.parse(pm.request.body.raw);",
 									"const target = pm.response.json();",
 									"",
-									"pm.test(\"Событие должно содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
+									"pm.test(\"Вакансия должна содержать поля: id, name, category, publishedOn, recruiter, description, state, company, location\", function () {",
 									"pm.expect(target).to.have.property('id');",
 									"pm.expect(target).to.have.property('name');",
 									"pm.expect(target).to.have.property('description');",
@@ -2280,7 +2791,7 @@
 							"variable": [
 								{
 									"key": "recruiterId",
-									"value": "3",
+									"value": "4",
 									"description": "recruiter id"
 								}
 							]
@@ -2299,6 +2810,16 @@
 									"    pm.response.to.have.status(201);  ",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Резюме должно содержать поля: id, vacancy, resume, created\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"    pm.expect(target).to.have.property('vacancy');",
+									"    pm.expect(target).to.have.property('resume');",
+									"    pm.expect(target).to.have.property('created');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2333,7 +2854,7 @@
 							"variable": [
 								{
 									"key": "resumeId",
-									"value": "2"
+									"value": "3"
 								},
 								{
 									"key": "vacancyId",
@@ -2387,7 +2908,7 @@
 							"variable": [
 								{
 									"key": "resumeId",
-									"value": "2",
+									"value": "3",
 									"description": "resume id"
 								}
 							]
@@ -2406,6 +2927,16 @@
 									"    pm.response.to.be.ok;    ",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Резюме должно содержать поля: id, vacancy, resume, created\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"    pm.expect(target).to.have.property('vacancy');",
+									"    pm.expect(target).to.have.property('resume');",
+									"    pm.expect(target).to.have.property('created');",
 									"});"
 								],
 								"type": "text/javascript"

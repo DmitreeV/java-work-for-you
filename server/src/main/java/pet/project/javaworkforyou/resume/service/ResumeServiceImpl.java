@@ -58,7 +58,7 @@ public class ResumeServiceImpl implements ResumeService {
     public ResumeDto getResumeByUserId(Long userId, Long resumeId) {
         Resume resume = getResume(resumeId);
         if (!resume.getCreator().getId().equals(userId)) {
-            throw new ConflictException("Resume data cannot be updated.");
+            throw new ConflictException("It is impossible to get the data of someone else's resume.");
         }
         log.info("Received a resume by user with id {}.", userId);
         return resumeMapper.toResumeDto(resume);

@@ -48,7 +48,7 @@ public class CompanyServiceImpl implements CompanyService {
             throw new ConflictException("It is not possible to delete a company while there are published vacancies.");
         }
         companyRepository.deleteById(compId);
-        log.info("Company with id {} is deleted.", compId);
+        log.info("Company with id {} is deleted .", compId);
     }
 
     @Override

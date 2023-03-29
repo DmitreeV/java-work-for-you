@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import pet.project.javaworkforyou.user.dto.UserDto;
 import pet.project.javaworkforyou.user.service.UserService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -21,7 +24,7 @@ public class UserAdminController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new user.")
-    public UserDto saveUser(@RequestBody UserDto userDto) {
+    public UserDto saveUser(@Valid @RequestBody UserDto userDto) {
         return userService.saveUser(userDto);
     }
 
@@ -36,8 +39,8 @@ public class UserAdminController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all users.")
     public List<UserDto> getAllUsers(@RequestParam(required = false) List<Long> ids,
-                                     @RequestParam(defaultValue = "0") int from,
-                                     @RequestParam(defaultValue = "10") int size) {
+                                     @PositiveOrZero @RequestParam(defaultValue = "0") int from,
+                                     @Positive @RequestParam(defaultValue = "10") int size) {
         return userService.getAllUsers(ids, from, size);
     }
 }

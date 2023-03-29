@@ -2,6 +2,9 @@ package pet.project.javaworkforyou.location.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @Builder
@@ -10,11 +13,15 @@ import lombok.*;
 @ToString
 public class LocationDto {
 
+    @NotBlank(message = "'name' can not be blank")
     private String name;
 
+    @NotNull(message = "'lat' can not be null")
     private float lat;
 
+    @NotNull(message = "'lon' can not be null")
     private float lon;
 
+    @NotNull(message = "'radius' can not be null")
     private Long radius;
 }

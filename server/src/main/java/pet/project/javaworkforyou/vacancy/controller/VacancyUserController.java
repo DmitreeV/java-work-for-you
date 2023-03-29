@@ -9,6 +9,8 @@ import pet.project.javaworkforyou.vacancy.dto.VacancyCreateDto;
 import pet.project.javaworkforyou.vacancy.dto.VacancyDto;
 import pet.project.javaworkforyou.vacancy.service.VacancyService;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users/{recruiterId}/vacancies")
@@ -20,7 +22,7 @@ public class VacancyUserController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new vacancy by user.")
-    public VacancyDto saveVacancy(@PathVariable Long recruiterId, @RequestBody VacancyCreateDto vacancyCreateDto) {
+    public VacancyDto saveVacancy(@PathVariable Long recruiterId, @Valid @RequestBody VacancyCreateDto vacancyCreateDto) {
         return vacancyService.saveVacancy(recruiterId, vacancyCreateDto);
     }
 
@@ -28,7 +30,7 @@ public class VacancyUserController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Update a vacancy by user.")
     public VacancyDto updateVacancyByRecruiter(@PathVariable Long vacancyId, @PathVariable Long recruiterId,
-                                          @RequestBody VacancyCreateDto vacancyCreateDto) {
+                                               @Valid @RequestBody VacancyCreateDto vacancyCreateDto) {
         return vacancyService.updateVacancyByRecruiter(vacancyId, recruiterId, vacancyCreateDto);
     }
 

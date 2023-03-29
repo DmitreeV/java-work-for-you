@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import pet.project.javaworkforyou.vacancy.dto.VacancyDto;
 import pet.project.javaworkforyou.vacancy.service.VacancyService;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,8 @@ public class VacancyPublicController {
     @GetMapping("/search")
     @Operation(summary = "Return the list of vacancies found by text.")
     List<VacancyDto> getItemByText(@RequestParam String text,
-                                   @RequestParam(defaultValue = "0") int from,
-                                   @RequestParam(defaultValue = "20") int size) {
+                                   @PositiveOrZero @RequestParam(defaultValue = "0") int from,
+                                   @Positive @RequestParam(defaultValue = "20") int size) {
         return vacancyService.searchVacanciesByText(text, from, size);
     }
 }

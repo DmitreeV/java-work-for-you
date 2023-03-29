@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import pet.project.javaworkforyou.category.dto.CategoryDto;
 import pet.project.javaworkforyou.category.service.CategoryService;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -21,8 +23,8 @@ public class CategoryPublicController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all categories.")
-    public List<CategoryDto> getAllCategories(@RequestParam(defaultValue = "0") Integer from,
-                                              @RequestParam(defaultValue = "10") Integer size) {
+    public List<CategoryDto> getAllCategories(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                              @Positive @RequestParam(defaultValue = "10") Integer size) {
         return categoryService.getAllCategories(from, size);
     }
 

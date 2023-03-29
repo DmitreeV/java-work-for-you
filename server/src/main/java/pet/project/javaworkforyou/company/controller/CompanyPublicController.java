@@ -12,6 +12,8 @@ import pet.project.javaworkforyou.company.service.CompanyService;
 import pet.project.javaworkforyou.vacancy.dto.VacancyDto;
 import pet.project.javaworkforyou.vacancy.service.VacancyService;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -27,8 +29,8 @@ public class CompanyPublicController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all companies.")
-    public List<CompanyDto> getAllCompanies(@RequestParam(defaultValue = "0") Integer from,
-                                            @RequestParam(defaultValue = "10") Integer size) {
+    public List<CompanyDto> getAllCompanies(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                            @Positive @RequestParam(defaultValue = "10") Integer size) {
         return companyService.getAllCompanies(from, size);
     }
 
@@ -43,8 +45,8 @@ public class CompanyPublicController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all company vacancies.")
     public List<VacancyDto> getAllVacanciesByCompany(@PathVariable Long compId,
-                                                     @RequestParam(defaultValue = "0") Integer from,
-                                                     @RequestParam(defaultValue = "10") Integer size) {
+                                                     @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                     @Positive @RequestParam(defaultValue = "10") Integer size) {
         return vacancyService.getAllVacanciesByCompany(compId, from, size);
     }
 
@@ -52,8 +54,8 @@ public class CompanyPublicController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all company comments.")
     public List<CommentDto> getAllCommentsByCompany(@PathVariable Long compId,
-                                                    @RequestParam(defaultValue = "0") Integer from,
-                                                    @RequestParam(defaultValue = "10") Integer size) {
+                                                    @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                    @Positive @RequestParam(defaultValue = "10") Integer size) {
         return commentService.getAllCommentsByCompany(compId, from, size);
     }
 }

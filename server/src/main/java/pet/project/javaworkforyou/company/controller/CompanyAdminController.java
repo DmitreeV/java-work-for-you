@@ -9,6 +9,8 @@ import pet.project.javaworkforyou.company.dto.CompanyCreateDto;
 import pet.project.javaworkforyou.company.dto.CompanyDto;
 import pet.project.javaworkforyou.company.service.CompanyService;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/admin/companies")
@@ -20,7 +22,7 @@ public class CompanyAdminController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new company.")
-    public CompanyDto saveCompany(@RequestBody CompanyCreateDto companyCreateDto) {
+    public CompanyDto saveCompany(@Valid @RequestBody CompanyCreateDto companyCreateDto) {
         return companyService.saveCompany(companyCreateDto);
     }
 

@@ -10,6 +10,8 @@ import pet.project.javaworkforyou.location.service.LocationService;
 import pet.project.javaworkforyou.vacancy.dto.VacancyDto;
 import pet.project.javaworkforyou.vacancy.service.VacancyService;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -24,8 +26,8 @@ public class LocationPublicController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all locations.")
-    public List<LocationDto> getAllLocations(@RequestParam(defaultValue = "0") Integer from,
-                                             @RequestParam(defaultValue = "10") Integer size) {
+    public List<LocationDto> getAllLocations(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                             @Positive @RequestParam(defaultValue = "10") Integer size) {
         return locationService.getAllLocations(from, size);
     }
 
@@ -40,8 +42,8 @@ public class LocationPublicController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Returns a list of all vacancies in location.")
     public List<VacancyDto> getAllVacanciesByLocation(@PathVariable Long locationId,
-                                                      @RequestParam(defaultValue = "0") Integer from,
-                                                      @RequestParam(defaultValue = "10") Integer size) {
+                                                      @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
         return vacancyService.getAllVacanciesInLocation(locationId, from, size);
     }
 }

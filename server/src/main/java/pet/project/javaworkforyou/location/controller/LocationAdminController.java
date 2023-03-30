@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import pet.project.javaworkforyou.location.dto.LocationDto;
 import pet.project.javaworkforyou.location.service.LocationService;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/admin/locations")
@@ -19,14 +21,14 @@ public class LocationAdminController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new location.")
-    public LocationDto saveLocation(@RequestBody LocationDto locationDto) {
+    public LocationDto saveLocation(@Valid @RequestBody LocationDto locationDto) {
         return locationService.saveLocation(locationDto);
     }
 
     @PatchMapping("/{locationId}")
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Update a location.")
-    public LocationDto updateLocation(@PathVariable Long locationId, @RequestBody LocationDto locationDto) {
+    public LocationDto updateLocation(@PathVariable Long locationId, @Valid @RequestBody LocationDto locationDto) {
         return locationService.updateLocation(locationId, locationDto);
     }
 

@@ -9,6 +9,7 @@ import pet.project.javaworkforyou.resume.dto.ResumeCreateDto;
 import pet.project.javaworkforyou.resume.dto.ResumeDto;
 import pet.project.javaworkforyou.resume.service.ResumeService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class ResumeUserController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new resume by user.")
-    public ResumeDto saveResume(@PathVariable Long userId, @RequestBody ResumeCreateDto resumeDto) {
+    public ResumeDto saveResume(@PathVariable Long userId, @Valid @RequestBody ResumeCreateDto resumeDto) {
         return resumeService.saveResume(userId, resumeDto);
     }
 
@@ -30,7 +31,7 @@ public class ResumeUserController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Update a resume by user.")
     public ResumeDto updateResume(@PathVariable Long userId, @PathVariable Long resumeId,
-                                  @RequestBody ResumeCreateDto resumeDto) {
+                                  @Valid @RequestBody ResumeCreateDto resumeDto) {
         return resumeService.updateResume(resumeId, userId, resumeDto);
     }
 

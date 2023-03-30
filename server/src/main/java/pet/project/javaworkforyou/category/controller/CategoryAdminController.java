@@ -9,6 +9,8 @@ import pet.project.javaworkforyou.category.dto.CategoryDto;
 import pet.project.javaworkforyou.category.dto.CategoryCreateDto;
 import pet.project.javaworkforyou.category.service.CategoryService;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/admin/categories")
@@ -20,7 +22,7 @@ public class CategoryAdminController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new category.")
-    public CategoryDto saveCategory(@RequestBody CategoryCreateDto categoryCreateDto) {
+    public CategoryDto saveCategory(@Valid @RequestBody CategoryCreateDto categoryCreateDto) {
         return categoryService.saveCategory(categoryCreateDto);
     }
 
@@ -34,7 +36,7 @@ public class CategoryAdminController {
     @PatchMapping("/{catId}")
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Update a category.")
-    public CategoryDto updateCategory(@PathVariable Long catId, @RequestBody CategoryCreateDto categoryCreateDto) {
+    public CategoryDto updateCategory(@PathVariable Long catId, @Valid @RequestBody CategoryCreateDto categoryCreateDto) {
         return categoryService.updateCategory(catId, categoryCreateDto);
     }
 }

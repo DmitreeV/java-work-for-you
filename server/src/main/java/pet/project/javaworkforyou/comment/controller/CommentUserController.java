@@ -9,6 +9,8 @@ import pet.project.javaworkforyou.comment.dto.CommentCreateDto;
 import pet.project.javaworkforyou.comment.dto.CommentDto;
 import pet.project.javaworkforyou.comment.service.CommentService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users/{userId}/comments")
@@ -20,7 +22,8 @@ public class CommentUserController {
     @PostMapping("/{compId}")
     @ResponseStatus(value = HttpStatus.CREATED)
     @Operation(summary = "Create a new comment by user.")
-    public CommentDto saveComment(@PathVariable Long userId, @PathVariable Long compId, @RequestBody CommentCreateDto commentDto) {
+    public CommentDto saveComment(@PathVariable Long userId, @PathVariable Long compId,
+                                  @Valid @RequestBody CommentCreateDto commentDto) {
         return commentService.saveComment(commentDto, userId, compId);
     }
 
@@ -28,7 +31,7 @@ public class CommentUserController {
     @ResponseStatus(value = HttpStatus.OK)
     @Operation(summary = "Update a comment by user.")
     public CommentDto updateComment(@PathVariable Long commentId, @PathVariable Long userId,
-                                    @RequestBody CommentCreateDto commentDto) {
+                                    @Valid @RequestBody CommentCreateDto commentDto) {
         return commentService.updateComment(commentId, userId, commentDto);
     }
 

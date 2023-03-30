@@ -42,40 +42,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Авторизация пользователя",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "user",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:8080/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -266,7 +232,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n   \"description\": \"test description\"\n}",
+							"raw": "{\n   \"description\": \"test description test description\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1488,7 +1454,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"text\": \"Good company!\"\n}",
+							"raw": "{\n    \"text\": \"A great company, I really enjoyed working in a team of professionals!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1556,7 +1522,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"text\": \"Bad company!\"\n}",
+							"raw": "{\n    \"text\": \"Bad company, I didn't like working in a team at all!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

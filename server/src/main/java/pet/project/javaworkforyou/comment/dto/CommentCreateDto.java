@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CommentCreateDto {
 
+    @NotBlank(message = "'text' can not be blank")
     @Size(min = 20, max = 2000)
     @Schema(example = "Very long text about the company")
     private String text;

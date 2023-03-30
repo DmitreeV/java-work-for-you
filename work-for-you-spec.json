@@ -1,0 +1,1831 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Work-for-you",
+    "description": "The app for search job",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/users/{userId}/resumes": {
+      "get": {
+        "tags": [
+          "Operations with resumes available to the authorized user."
+        ],
+        "summary": "Return all the user's resume.",
+        "operationId": "getAllResumesByUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResumeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Operations with resumes available to the authorized user."
+        ],
+        "summary": "Create a new resume by user.",
+        "operationId": "saveResume",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumeCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/comments/{compId}": {
+      "post": {
+        "tags": [
+          "Operations with comments available to the authorized user."
+        ],
+        "summary": "Create a new comment by user.",
+        "operationId": "saveComment",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "compId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{recruiterId}/vacancies": {
+      "post": {
+        "tags": [
+          "Operations with vacancies available to the authorized user."
+        ],
+        "summary": "Create a new vacancy by user.",
+        "operationId": "saveVacancy",
+        "parameters": [
+          {
+            "name": "recruiterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reactions/{resumeId}/{vacancyId}": {
+      "post": {
+        "tags": [
+          "Operations with reactions available to the authorized user."
+        ],
+        "summary": "Create a new reaction by user.",
+        "operationId": "saveReaction",
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "resumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "Operations with categories available to the administrator."
+        ],
+        "summary": "Returns a list of all users.",
+        "operationId": "getAllUsers",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Operations with categories available to the administrator."
+        ],
+        "summary": "Create a new user.",
+        "operationId": "saveUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/locations": {
+      "post": {
+        "tags": [
+          "Operations with locations available to the administrator."
+        ],
+        "summary": "Create a new location.",
+        "operationId": "saveLocation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/companies": {
+      "post": {
+        "tags": [
+          "Operations with companies available to the administrator."
+        ],
+        "summary": "Create a new company.",
+        "operationId": "saveCompany",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/categories": {
+      "post": {
+        "tags": [
+          "Operations with categories available to the administrator."
+        ],
+        "summary": "Create a new category.",
+        "operationId": "saveCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/resumes/{resumeId}": {
+      "get": {
+        "tags": [
+          "Operations with resumes available to the authorized user."
+        ],
+        "summary": "Returns a resume by its Id.",
+        "operationId": "getResumeByUserId",
+        "parameters": [
+          {
+            "name": "resumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Operations with resumes available to the authorized user."
+        ],
+        "summary": "Delete a resume by user.",
+        "operationId": "deleteResume",
+        "parameters": [
+          {
+            "name": "resumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Operations with resumes available to the authorized user."
+        ],
+        "summary": "Update a resume by user.",
+        "operationId": "updateResume",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "resumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumeCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/comments/{commentId}": {
+      "delete": {
+        "tags": [
+          "Operations with comments available to the authorized user."
+        ],
+        "summary": "Delete a comment by user.",
+        "operationId": "userDeleteComment",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Operations with comments available to the authorized user."
+        ],
+        "summary": "Update a comment by user.",
+        "operationId": "updateComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{recruiterId}/vacancies/{vacancyId}": {
+      "delete": {
+        "tags": [
+          "Operations with vacancies available to the authorized user."
+        ],
+        "summary": "Delete a vacancy by user.",
+        "operationId": "userDeleteComment_1",
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "recruiterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Operations with vacancies available to the authorized user."
+        ],
+        "summary": "Update a vacancy by user.",
+        "operationId": "updateVacancyByRecruiter",
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "recruiterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{recruiterId}/vacancies/{vacancyId}/archive": {
+      "patch": {
+        "tags": [
+          "Operations with vacancies available to the authorized user."
+        ],
+        "summary": "Move a vacancy to the archive.",
+        "operationId": "archivedVacancyByRecruiter",
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "recruiterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/locations/{locationId}": {
+      "delete": {
+        "tags": [
+          "Operations with locations available to the administrator."
+        ],
+        "summary": "Delete a location.",
+        "operationId": "deleteLocation",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Operations with locations available to the administrator."
+        ],
+        "summary": "Update a location.",
+        "operationId": "updateLocation",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/categories/{catId}": {
+      "delete": {
+        "tags": [
+          "Operations with categories available to the administrator."
+        ],
+        "summary": "Delete a category.",
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "catId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Operations with categories available to the administrator."
+        ],
+        "summary": "Update a category.",
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "name": "catId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vacancies/{vacancyId}": {
+      "get": {
+        "tags": [
+          "Operations with vacancies in the public domain."
+        ],
+        "summary": "Returns a vacancy by its Id.",
+        "operationId": "getVacancyById",
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vacancies/search": {
+      "get": {
+        "tags": [
+          "Operations with vacancies in the public domain."
+        ],
+        "summary": "Return the list of vacancies found by text.",
+        "operationId": "getItemByText",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reactions/{resumeId}/all": {
+      "get": {
+        "tags": [
+          "Operations with reactions available to the authorized user."
+        ],
+        "summary": "Returns all user reactions.",
+        "operationId": "getAllReactionsByResumeCreator",
+        "parameters": [
+          {
+            "name": "resumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReactionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reactions/{reactionId}": {
+      "get": {
+        "tags": [
+          "Operations with reactions available to the authorized user."
+        ],
+        "summary": "Returns a reaction by its Id.",
+        "operationId": "getResumeByUserId_1",
+        "parameters": [
+          {
+            "name": "reactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Operations with reactions available to the authorized user."
+        ],
+        "summary": "Delete a new reaction by user.",
+        "operationId": "deleteReaction",
+        "parameters": [
+          {
+            "name": "reactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "tags": [
+          "Operations with locations in the public domain."
+        ],
+        "summary": "Returns a list of all locations.",
+        "operationId": "getAllLocations",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationId}": {
+      "get": {
+        "tags": [
+          "Operations with locations in the public domain."
+        ],
+        "summary": "Returns a location by its Id.",
+        "operationId": "getLocationById",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationId}/vacancies": {
+      "get": {
+        "tags": [
+          "Operations with locations in the public domain."
+        ],
+        "summary": "Returns a list of all vacancies in location.",
+        "operationId": "getAllVacanciesByLocation",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies": {
+      "get": {
+        "tags": [
+          "Operations with companies in the public domain."
+        ],
+        "summary": "Returns a list of all companies.",
+        "operationId": "getAllCompanies",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{compId}": {
+      "get": {
+        "tags": [
+          "Operations with companies in the public domain."
+        ],
+        "summary": "Returns a company by its Id.",
+        "operationId": "getCompanyById",
+        "parameters": [
+          {
+            "name": "compId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{compId}/vacancies": {
+      "get": {
+        "tags": [
+          "Operations with companies in the public domain."
+        ],
+        "summary": "Returns a list of all company vacancies.",
+        "operationId": "getAllVacanciesByCompany",
+        "parameters": [
+          {
+            "name": "compId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{compId}/comments": {
+      "get": {
+        "tags": [
+          "Operations with companies in the public domain."
+        ],
+        "summary": "Returns a list of all company comments.",
+        "operationId": "getAllCommentsByCompany",
+        "parameters": [
+          {
+            "name": "compId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "Operations with comments in the public domain."
+        ],
+        "summary": "Returns a comment by its Id.",
+        "operationId": "getVacancyById_1",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Operations with categories in the public domain."
+        ],
+        "summary": "Returns a list of all categories.",
+        "operationId": "getAllCategories",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{catId}": {
+      "get": {
+        "tags": [
+          "Operations with categories in the public domain."
+        ],
+        "summary": "Returns a category by its Id.",
+        "operationId": "getCategoryById",
+        "parameters": [
+          {
+            "name": "catId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/{userId}": {
+      "delete": {
+        "tags": [
+          "Operations with categories available to the administrator."
+        ],
+        "summary": "Delete a new user.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/admin/companies/{compId}": {
+      "delete": {
+        "tags": [
+          "Operations with companies available to the administrator."
+        ],
+        "summary": "Delete a company.",
+        "operationId": "deleteCompany",
+        "parameters": [
+          {
+            "name": "compId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResumeCreateDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 5000,
+            "minLength": 20,
+            "type": "string",
+            "example": "Resume description"
+          }
+        }
+      },
+      "ResumeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdOn": {
+            "type": "string"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/UserShortDto"
+          }
+        }
+      },
+      "UserShortDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CommentCreateDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "maxLength": 2000,
+            "minLength": 20,
+            "type": "string",
+            "example": "Very long text about the company"
+          }
+        }
+      },
+      "CommentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "text": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LocationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number",
+            "format": "float"
+          },
+          "lon": {
+            "type": "number",
+            "format": "float"
+          },
+          "radius": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "example": {
+          "lat": 55.75,
+          "lon": 65.61
+        }
+      },
+      "VacancyCreateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Java developer"
+          },
+          "description": {
+            "maxLength": 5000,
+            "minLength": 20,
+            "type": "string",
+            "example": "Vacancy description"
+          },
+          "category": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationDto"
+          },
+          "company": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          }
+        }
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CommentShortDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CompanyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentShortDto"
+            }
+          },
+          "vacancies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VacancyShortDto"
+            }
+          }
+        }
+      },
+      "VacancyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "publishedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "recruiter": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "category": {
+            "$ref": "#/components/schemas/CategoryDto"
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationDto"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyDto"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PUBLISHED",
+              "ARCHIVED"
+            ]
+          }
+        }
+      },
+      "VacancyShortDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "publishedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationDto"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyDto"
+          }
+        }
+      },
+      "ReactionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "vacancy": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "resume": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "string"
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyCreateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Sbertech"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 10,
+            "type": "string",
+            "example": "The largest IT company in Russia"
+          }
+        }
+      },
+      "CategoryCreateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Construction"
+          }
+        }
+      }
+    }
+  }
+}
